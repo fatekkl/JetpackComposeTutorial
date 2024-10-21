@@ -6,14 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.proa.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,10 +28,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackComposeTutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MessageCard(
-                        Message("Matheus", "Hello!!"),
-                        Modifier.padding(innerPadding)
-                    )
+                    Column {
+                        for (n in 1..2) {
+                            MessageCard(
+                                Message(author = "Matheus", body = "Hello!!"),
+                                Modifier.padding(innerPadding)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -48,22 +57,26 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun MessageCard(msg: Message, modifier: Modifier){
 
 
-    Column {
+
+    Row(Modifier.padding(40.dp)) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = "Android"
+            painter = painterResource(id = R.drawable.example),
+            contentDescription = "Android",
+            modifier = Modifier.size(80.dp).clip(CircleShape)
         )
 
-        Text(
-            text =  msg.author,
-            modifier = modifier
-        )
+        Column {
+            Text(
+                text =  msg.author,
+                modifier = modifier
+            )
 
-        Text(
-            text = msg.body,
-            modifier = modifier
-        )
+            Text(
+                text = msg.body,
+            )
+        }
     }
+
 
 }
 
