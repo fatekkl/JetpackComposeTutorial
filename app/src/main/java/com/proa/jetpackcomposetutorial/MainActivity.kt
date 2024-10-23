@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,8 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.proa.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,17 +35,31 @@ class MainActivity : ComponentActivity() {
             JetpackComposeTutorialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column {
-                        for (n in 1..2) {
-                            MessageCard(
-                                Message(author = "Matheus", body = "Hello!!"),
-                                Modifier.padding(innerPadding)
-                            )
-                        }
+                        MessageCard(
+                            SampleData.conversationSample,
+                            Modifier.padding(innerPadding)
+                        )
                     }
                 }
             }
         }
     }
+}
+
+
+object SampleData {
+
+    val conversationSample = listOf<Message>(
+        Message(
+            "Hudson Branco",
+            "Test...Test...Test..."
+        ),
+        Message(
+            "Murilo Branco",
+            "LL"
+        )
+    )
+
 }
 
 data class Message(val author: String, val body: String)
@@ -54,26 +74,34 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun MessageCard(msg: Message, modifier: Modifier){
+fun MessageCard(messages: List<Message>, modifier: Modifier) {
 
 
+    LazyColumn {
+        items(messages) { msg ->
+            Row(Modifier.padding(40.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.example),
+                    contentDescription = "Android",
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                )
 
-    Row(Modifier.padding(40.dp)) {
-        Image(
-            painter = painterResource(id = R.drawable.example),
-            contentDescription = "Android",
-            modifier = Modifier.size(80.dp).clip(CircleShape)
-        )
+                Column {
 
-        Column {
-            Text(
-                text =  msg.author,
-                modifier = modifier
-            )
+                    Text(
+                        text = msg.author,
+                        fontSize = 26.sp,
+                        fontFamily = FontFamily(Font(R.font.diplomata, FontWeight.Bold)),
 
-            Text(
-                text = msg.body,
-            )
+                    )
+
+                    Text(
+                        text = msg.body,
+                    )
+                }
+            }
         }
     }
 
